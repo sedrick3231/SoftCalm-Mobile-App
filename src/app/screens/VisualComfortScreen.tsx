@@ -1,12 +1,14 @@
 import React from 'react';
 import { Header } from '../components/Header';
 import { useSensory } from '../context/SensoryContext';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface VisualComfortScreenProps {
   onBack: () => void;
 }
 
 export function VisualComfortScreen({ onBack }: VisualComfortScreenProps) {
+  useBackButton(onBack);
   const { settings, updateBrightness, updateContrast, updateVisualDensity } = useSensory();
 
   const getSliderRange = (label: string) => {

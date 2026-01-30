@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface HelpScreenProps {
   onBack: () => void;
@@ -7,6 +7,7 @@ interface HelpScreenProps {
 }
 
 export function HelpScreen({ onBack, onNavigate }: HelpScreenProps) {
+  useBackButton(onBack);
   const helpTopics = [
     { id: 'tips', title: 'Tips for Hypersensitive Users', emoji: '💡' },
     { id: 'emergency', title: 'Emergency Calm Screen', emoji: '🆘' },
@@ -19,14 +20,6 @@ export function HelpScreen({ onBack, onNavigate }: HelpScreenProps) {
       style={{ backgroundColor: `var(--color-background)` }}
     >
       <div className="px-6 py-8">
-        <button
-          onClick={onBack}
-          className="mb-8 min-h-[48px] px-4 py-2 transition-all duration-300 hover:scale-105 active:scale-95"
-          style={{ color: `var(--color-primary)` }}
-        >
-          <ArrowLeft size={24} />
-        </button>
-
         <div className="text-center mb-10">
           <div className="text-6xl mb-4">📚</div>
           <h2 

@@ -93,16 +93,9 @@ function AppContent() {
   const [history, setHistory] = useState<Screen[]>(['splash']);
   const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    // If user logs out, go to welcome
-    if (!isAuthenticated && currentScreen !== 'splash' && currentScreen !== 'welcome' && currentScreen !== 'login' && currentScreen !== 'signup' && currentScreen !== 'forgot-password') {
-      navigate('welcome');
-    }
-  }, [isAuthenticated]);
-
   const navigate = (screen: Screen) => {
     setCurrentScreen(screen);
-    setHistory([...history, screen]);
+    setHistory((prevHistory) => [...prevHistory, screen]);
 
     // Update current tab for main screens
     if (screen === 'main-home') setCurrentTab('home');
@@ -112,19 +105,47 @@ function AppContent() {
   };
 
   const goBack = () => {
-    if (history.length > 1) {
-      const newHistory = history.slice(0, -1);
-      setHistory(newHistory);
-      const prevScreen = newHistory[newHistory.length - 1];
-      setCurrentScreen(prevScreen);
-      
-      // Update tab
-      if (prevScreen === 'main-home') setCurrentTab('home');
-      if (prevScreen === 'main-calm') setCurrentTab('calm');
-      if (prevScreen === 'main-guides') setCurrentTab('guides');
-      if (prevScreen === 'main-settings') setCurrentTab('settings');
-    }
+    setHistory((prevHistory) => {
+      if (prevHistory.length > 1) {
+        const newHistory = prevHistory.slice(0, -1);
+        const prevScreen = newHistory[newHistory.length - 1];
+        setCurrentScreen(prevScreen);
+        
+        // Update tab
+        if (prevScreen === 'main-home') setCurrentTab('home');
+        if (prevScreen === 'main-calm') setCurrentTab('calm');
+        if (prevScreen === 'main-guides') setCurrentTab('guides');
+        if (prevScreen === 'main-settings') setCurrentTab('settings');
+        
+        return newHistory;
+      }
+      return prevHistory;
+    });
   };
+
+  useEffect(() => {
+    // If user logs out, go to welcome
+    if (!isAuthenticated && currentScreen !== 'splash' && currentScreen !== 'welcome' && currentScreen !== 'login' && currentScreen !== 'signup' && currentScreen !== 'forgot-password') {
+      navigate('welcome');
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    // Handle browser back button and mobile back button
+    const handleBackButton = (event: PopStateEvent) => {
+      event.preventDefault();
+      goBack();
+    };
+
+    window.addEventListener('popstate', handleBackButton);
+    
+    // Push a history state to enable back button interception
+    window.history.pushState({ screen: currentScreen }, '', window.location.href);
+
+    return () => {
+      window.removeEventListener('popstate', handleBackButton);
+    };
+  }, []);
 
   const handleTabChange = (tab: 'home' | 'calm' | 'guides' | 'settings') => {
     setCurrentTab(tab);
@@ -148,6 +169,7 @@ function AppContent() {
           <WelcomeScreen
             onGetStarted={() => navigate('signup')}
             onLogin={() => navigate('login')}
+            onDemoLogin={() => navigate('main-home')}
           />
         );
       
@@ -197,6 +219,8 @@ function AppContent() {
               onNavigateToMoodTracker={() => navigate('mood-tracker')}
               onNavigateToGrounding={() => navigate('grounding')}
               onNavigateToSounds={() => navigate('sounds')}
+              onBack={goBack}
+              onTabChange={setCurrentTab}
             />
             {isAuthenticated && (
               <BottomNavigation activeTab={currentTab} onNavigate={handleTabChange} />
@@ -214,6 +238,8 @@ function AppContent() {
                 if (feature === 'sounds') navigate('sounds');
                 if (feature === 'visual') navigate('visual-calm');
               }}
+              onBack={goBack}
+              onTabChange={setCurrentTab}
             />
             {isAuthenticated && (
               <BottomNavigation activeTab={currentTab} onNavigate={handleTabChange} />
@@ -231,6 +257,8 @@ function AppContent() {
                 if (guide === 'triggers') navigate('guide-triggers');
                 if (guide === 'support') navigate('guide-support');
               }}
+              onBack={goBack}
+              onTabChange={setCurrentTab}
             />
             {isAuthenticated && (
               <BottomNavigation activeTab={currentTab} onNavigate={handleTabChange} />
@@ -244,6 +272,7 @@ function AppContent() {
             <MainSettingsScreen 
               onNavigate={navigate}
               onBack={() => navigate('main-home')}
+              onTabChange={setCurrentTab}
             />
             {isAuthenticated && (
               <BottomNavigation activeTab={currentTab} onNavigate={handleTabChange} />

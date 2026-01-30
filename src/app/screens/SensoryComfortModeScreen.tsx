@@ -1,12 +1,13 @@
 import React from 'react';
-import { ArrowLeft } from 'lucide-react';
 import { useSensory } from '../context/SensoryContext';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface SensoryComfortModeScreenProps {
   onBack: () => void;
 }
 
 export function SensoryComfortModeScreen({ onBack }: SensoryComfortModeScreenProps) {
+  useBackButton(onBack);
   const { settings, updateComfortLevel } = useSensory();
 
   const getComfortDescription = () => {
@@ -24,13 +25,6 @@ export function SensoryComfortModeScreen({ onBack }: SensoryComfortModeScreenPro
       style={{ backgroundColor: `var(--color-background)` }}
     >
       <div className="px-6 py-8">
-        <button
-          onClick={onBack}
-          className="mb-8 min-h-[48px] px-4 py-2 transition-all duration-300 hover:scale-105 active:scale-95"
-          style={{ color: `var(--color-primary)` }}
-        >
-          <ArrowLeft size={24} />
-        </button>
 
         <div className="text-center mb-10">
           <div className="text-6xl mb-4">🎚️</div>

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useSensory } from '../context/SensoryContext';
-import { ArrowLeft, Play, Pause } from 'lucide-react';
+import { Play, Pause } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface CalmingSoundsProps {
   onBack?: () => void;
 }
 
 export function CalmingSounds({ onBack }: CalmingSoundsProps) {
+  useBackButton(onBack);
   const { settings } = useSensory();
   const [playingSound, setPlayingSound] = useState<string | null>(null);
   const [volume, setVolume] = useState(50);
@@ -34,14 +36,6 @@ export function CalmingSounds({ onBack }: CalmingSoundsProps) {
       style={{ backgroundColor: `var(--color-background)` }}
     >
       <div className="px-5 py-6 max-w-2xl mx-auto">
-        <button
-          onClick={onBack}
-          className="mb-8 min-h-[48px] px-4 py-2 transition-all duration-300 hover:scale-105 active:scale-95"
-          style={{ color: `var(--color-primary)` }}
-        >
-          <ArrowLeft size={24} />
-        </button>
-
         <div className="text-center mb-10">
           <h2 
             className="text-3xl font-bold mb-2 transition-colors duration-300"

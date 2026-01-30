@@ -1,12 +1,19 @@
 import React from 'react';
 import { Wind, Compass, Music, Eye } from 'lucide-react';
 import { useSensory } from '../context/SensoryContext';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface MainCalmScreenProps {
   onSelectFeature?: (feature: string) => void;
+  onBack?: () => void;
+  onTabChange?: (tab: 'home' | 'calm' | 'guides' | 'settings') => void;
 }
 
-export function MainCalmScreen({ onSelectFeature }: MainCalmScreenProps) {
+export function MainCalmScreen({ onSelectFeature, onBack, onTabChange }: MainCalmScreenProps) {
+  useBackButton(onBack);
+  React.useEffect(() => {
+    onTabChange?.('calm');
+  }, [onTabChange]);
   const { settings } = useSensory();
 
   const features = [

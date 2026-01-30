@@ -1,23 +1,24 @@
 import React from 'react';
-import { Header } from '../components/Header';
 import { CalmCard } from '../components/CalmCard';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface PrivacyScreenProps {
   onBack: () => void;
 }
 
 export function PrivacyScreen({ onBack }: PrivacyScreenProps) {
+  useBackButton(onBack);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-      <Header onBack={onBack} />
-      
+
       <div className="px-6 py-8">
         <div className="text-center mb-8">
           <div className="text-6xl mb-4">🔒</div>
           <h2 className="text-3xl text-gray-700 mb-2">Your Privacy & Safety</h2>
           <p className="text-lg text-gray-600">Complete transparency about your data</p>
         </div>
-        
+
         <div className="max-w-md mx-auto space-y-6">
           {/* Core Privacy Promise */}
           <CalmCard color="purple">

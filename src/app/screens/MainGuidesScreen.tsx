@@ -1,12 +1,19 @@
 import React from 'react';
 import { BookOpen, AlertCircle, Clock, Users } from 'lucide-react';
 import { useSensory } from '../context/SensoryContext';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface MainGuidesScreenProps {
   onSelectGuide?: (guide: string) => void;
+  onBack?: () => void;
+  onTabChange?: (tab: 'home' | 'calm' | 'guides' | 'settings') => void;
 }
 
-export function MainGuidesScreen({ onSelectGuide }: MainGuidesScreenProps) {
+export function MainGuidesScreen({ onSelectGuide, onBack, onTabChange }: MainGuidesScreenProps) {
+  useBackButton(onBack);
+  React.useEffect(() => {
+    onTabChange?.('guides');
+  }, [onTabChange]);
   const { settings } = useSensory();
 
   const guides = [

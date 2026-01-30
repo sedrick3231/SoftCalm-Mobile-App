@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSensory } from '../context/SensoryContext';
-import { ArrowLeft } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface GuideDetailScreenProps {
   guideId: string;
@@ -8,6 +8,7 @@ interface GuideDetailScreenProps {
 }
 
 export function GuideDetailScreen({ guideId, onBack }: GuideDetailScreenProps) {
+  useBackButton(onBack);
   const { settings } = useSensory();
 
   const guides: Record<string, any> = {
@@ -117,15 +118,6 @@ export function GuideDetailScreen({ guideId, onBack }: GuideDetailScreenProps) {
           >
             Guide not found
           </p>
-          <button
-            onClick={onBack}
-            className="mt-6 rounded-3xl px-8 py-5 text-white font-bold transition-all duration-300"
-            style={{
-              backgroundColor: `var(--color-primary)`,
-            }}
-          >
-            Go Back
-          </button>
         </div>
       </div>
     );
@@ -137,14 +129,6 @@ export function GuideDetailScreen({ guideId, onBack }: GuideDetailScreenProps) {
       style={{ backgroundColor: `var(--color-background)` }}
     >
       <div className="px-5 py-6 max-w-2xl mx-auto">
-        <button
-          onClick={onBack}
-          className="mb-8 min-h-[48px] px-4 py-2 transition-all duration-300 hover:scale-105 active:scale-95"
-          style={{ color: `var(--color-primary)` }}
-        >
-          <ArrowLeft size={24} />
-        </button>
-
         {/* Header */}
         <div className="text-center mb-10">
           <p className="text-6xl mb-4">{guide.emoji}</p>

@@ -2,12 +2,14 @@ import React from 'react';
 import { Header } from '../components/Header';
 import { useSensory } from '../context/SensoryContext';
 import { Bell, BellOff } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface NotificationsControlScreenProps {
   onBack: () => void;
 }
 
 export function NotificationsControlScreen({ onBack }: NotificationsControlScreenProps) {
+  useBackButton(onBack);
   const { settings, toggleNotifications } = useSensory();
 
   return (

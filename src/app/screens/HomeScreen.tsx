@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { ArrowLeft } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface HomeScreenProps {
   onNavigate: (screen: string) => void;
@@ -8,6 +9,7 @@ interface HomeScreenProps {
 }
 
 export function HomeScreen({ onNavigate, onBack }: HomeScreenProps) {
+  useBackButton(onBack);
   const { user } = useAuth();
 
   const menuItems = [

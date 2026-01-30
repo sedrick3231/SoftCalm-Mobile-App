@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useSensory } from '../context/SensoryContext';
-import { Bell, Lock, Zap } from 'lucide-react';
+import { Bell, Lock, Zap, ChevronDown } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface MainSettingsScreenProps {
     onNavigate?: (screen: any) => void;
     onBack?: () => void;
+    onTabChange?: (tab: 'home' | 'calm' | 'guides' | 'settings') => void;
 }
 
-export function MainSettingsScreen({ onNavigate, onBack }: MainSettingsScreenProps) {
+export function MainSettingsScreen({ onNavigate, onBack, onTabChange }: MainSettingsScreenProps) {
+    useBackButton(onBack);
+    React.useEffect(() => {
+        onTabChange?.('settings');
+    }, [onTabChange]);
     const { logout, user } = useAuth();
     const {
         settings,
@@ -20,6 +26,7 @@ export function MainSettingsScreen({ onNavigate, onBack }: MainSettingsScreenPro
         toggleNotifications,
     } = useSensory();
     const [animationSpeed, setAnimationSpeed] = useState(50);
+    const [isCustomizeExpanded, setIsCustomizeExpanded] = useState(false);
 
     const handleLogout = () => {
         logout();
@@ -61,159 +68,188 @@ export function MainSettingsScreen({ onNavigate, onBack }: MainSettingsScreenPro
                         Make the app feel right for you
                     </p>
                 </div>
-
-                {/* Sensory Comfort */}
                 <div className="mb-8">
-                    <p
-                        className="text-xs font-bold uppercase tracking-wider mb-4 transition-colors duration-300"
-                        style={{ color: `var(--color-accent)` }}
+                    <button
+                        onClick={() => setIsCustomizeExpanded(!isCustomizeExpanded)}
+                        className="w-full rounded-3xl p-6 border-2 transition-all duration-300 flex items-center justify-between hover:scale-105 active:scale-95"
+                        style={{
+                            backgroundColor: `var(--color-secondary)`,
+                            borderColor: `var(--color-primary)`,
+                        }}
                     >
-                        Sensory Comfort
-                    </p>
-
-                    <div className="space-y-6">
-                        {/* Theme Selection */}
-                        <div>
-                            <p
-                                className="text-xs font-bold uppercase tracking-wider mb-3 transition-colors duration-300"
-                                style={{ color: `var(--color-primary)` }}
-                            >
-                                Color Theme
-                            </p>
-                            <div className="grid grid-cols-5 gap-2">
-                                {themes.map((theme) => (
-                                    <button
-                                        key={theme.id}
-                                        onClick={() => setTheme(theme.id as any)}
-                                        className={`rounded-2xl p-3 text-center text-xs font-semibold transition-all duration-300 ${settings.theme === theme.id ? 'ring-4 ring-offset-2 scale-110' : 'opacity-70 hover:opacity-90'
-                                            }`}
-                                        style={{
-                                            backgroundColor: theme.color,
-                                            color: theme.id === 'light' ? '#000' : '#fff',
-                                            border: '1px solid black',
-                                        }}
-                                        title={theme.name}
-                                    >
-                                        <div className="text-lg">{theme.name.substring(0, 1)}</div>
-                                    </button>
-                                ))}
+                        <div className="flex items-center gap-4">
+                            <span className="text-3xl">🎨</span>
+                            <div className="text-left">
+                                <p
+                                    className="text-lg font-bold transition-colors duration-300"
+                                    style={{ color: `var(--color-primary)` }}
+                                >
+                                    Customize Screen
+                                </p>
+                                <p
+                                    className="text-xs transition-colors duration-300 opacity-70"
+                                    style={{ color: `var(--color-primary)` }}
+                                >
+                                    Adjust theme, brightness, contrast & text size
+                                </p>
                             </div>
                         </div>
-
-                        {/* Brightness */}
-                        <div
-                            className="rounded-3xl p-6 border-2 transition-colors duration-300"
-                            style={{
-                                backgroundColor: `var(--color-secondary)`,
-                                borderColor: `var(--color-primary)`,
+                        <ChevronDown
+                            size={24}
+                            style={{ 
+                                color: `var(--color-primary)`,
+                                transform: isCustomizeExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                                transition: 'transform 300ms ease-out'
                             }}
-                        >
-                            <label className="flex items-center justify-between mb-4">
-                                <span
-                                    className="text-sm font-bold transition-colors duration-300"
+                        />
+                    </button>
+
+                    {/* Expandable Content */}
+                    {isCustomizeExpanded && (
+                        <div className="mt-6 space-y-6 animate-in fade-in duration-300">
+                            {/* Theme Selection */}
+                            <div>
+                                <p
+                                    className="text-xs font-bold uppercase tracking-wider mb-3 transition-colors duration-300"
                                     style={{ color: `var(--color-primary)` }}
                                 >
-                                    Brightness
-                                </span>
-                                <span
-                                    className="text-sm font-semibold transition-colors duration-300"
-                                    style={{ color: `var(--color-accent)` }}
-                                >
-                                    {settings.brightness}%
-                                </span>
-                            </label>
-                            <input
-                                type="range"
-                                min="30"
-                                max="60"
-                                value={settings.brightness}
-                                onChange={(e) => updateBrightness(Number(e.target.value))}
-                                className="w-full h-3 rounded-full cursor-pointer"
-                                style={{
-                                    background: `linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ${((settings.brightness - 30) / 30) * 100}%, var(--color-secondary) ${((settings.brightness - 30) / 30) * 100}%, var(--color-secondary) 100%)`,
-                                }}
-                            />
-                        </div>
+                                    Color Theme
+                                </p>
+                                <div className="grid grid-cols-5 gap-2">
+                                    {themes.map((theme) => (
+                                        <button
+                                            key={theme.id}
+                                            onClick={() => setTheme(theme.id as any)}
+                                            className={`rounded-2xl p-3 text-center text-xs font-semibold transition-all duration-300 ${settings.theme === theme.id ? 'ring-4 ring-offset-2 scale-110' : 'opacity-70 hover:opacity-90'
+                                                }`}
+                                            style={{
+                                                backgroundColor: theme.color,
+                                                color: theme.id === 'light' ? '#000' : '#fff',
+                                                border: '1px solid black',
+                                            }}
+                                            title={theme.name}
+                                        >
+                                            <div className="text-lg">{theme.name.substring(0, 1)}</div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
 
-                        {/* Contrast */}
-                        <div
-                            className="rounded-3xl p-6 border-2 transition-colors duration-300"
-                            style={{
-                                backgroundColor: `var(--color-secondary)`,
-                                borderColor: `var(--color-primary)`,
-                            }}
-                        >
-                            <label className="flex items-center justify-between mb-4">
-                                <span
-                                    className="text-sm font-bold transition-colors duration-300"
-                                    style={{ color: `var(--color-primary)` }}
-                                >
-                                    Contrast
-                                </span>
-                                <span
-                                    className="text-sm font-semibold transition-colors duration-300"
-                                    style={{ color: `var(--color-accent)` }}
-                                >
-                                    {settings.contrast}%
-                                </span>
-                            </label>
-                            <input
-                                type="range"
-                                min="40"
-                                max="70"
-                                value={settings.contrast}
-                                onChange={(e) => updateContrast(Number(e.target.value))}
-                                className="w-full h-3 rounded-full cursor-pointer"
+                            {/* Brightness */}
+                            <div
+                                className="rounded-3xl p-6 border-2 transition-colors duration-300"
                                 style={{
-                                    background: `linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ${((settings.contrast - 40) / 30) * 100}%, var(--color-secondary) ${((settings.contrast - 40) / 30) * 100}%, var(--color-secondary) 100%)`,
-                                }}
-                            />
-                        </div>
-
-                        {/* Text Size */}
-                        <div
-                            className="rounded-3xl p-6 border-2 transition-colors duration-300"
-                            style={{
-                                backgroundColor: `var(--color-secondary)`,
-                                borderColor: `var(--color-primary)`,
-                            }}
-                        >
-                            <label className="flex items-center justify-between mb-4">
-                                <span
-                                    className="text-sm font-bold transition-colors duration-300"
-                                    style={{ color: `var(--color-primary)` }}
-                                >
-                                    Text Size
-                                </span>
-                                <span
-                                    className="text-sm font-semibold transition-colors duration-300"
-                                    style={{ color: `var(--color-accent)` }}
-                                >
-                                    {((settings.textSize / 100) * 0.8 + 0.8).toFixed(1)}x
-                                </span>
-                            </label>
-                            <input
-                                type="range"
-                                min="0"
-                                max="100"
-                                value={settings.textSize}
-                                onChange={(e) => updateTextSize(Number(e.target.value))}
-                                className="w-full h-3 rounded-full cursor-pointer"
-                                style={{
-                                    background: `linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ${settings.textSize}%, var(--color-secondary) ${settings.textSize}%, var(--color-secondary) 100%)`,
-                                }}
-                            />
-                            <p
-                                className="text-sm mt-4 text-center font-semibold transition-colors duration-300"
-                                style={{
-                                    color: `var(--color-primary)`,
-                                    fontSize: `var(--text-scale)`
+                                    backgroundColor: `var(--color-secondary)`,
+                                    borderColor: `var(--color-primary)`,
                                 }}
                             >
-                                Preview text
-                            </p>
+                                <label className="flex items-center justify-between mb-4">
+                                    <span
+                                        className="text-sm font-bold transition-colors duration-300"
+                                        style={{ color: `var(--color-primary)` }}
+                                    >
+                                        Brightness
+                                    </span>
+                                    <span
+                                        className="text-sm font-semibold transition-colors duration-300"
+                                        style={{ color: `var(--color-accent)` }}
+                                    >
+                                        {settings.brightness}%
+                                    </span>
+                                </label>
+                                <input
+                                    type="range"
+                                    min="30"
+                                    max="60"
+                                    value={settings.brightness}
+                                    onChange={(e) => updateBrightness(Number(e.target.value))}
+                                    className="w-full h-3 rounded-full cursor-pointer"
+                                    style={{
+                                        background: `linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ${((settings.brightness - 30) / 30) * 100}%, var(--color-secondary) ${((settings.brightness - 30) / 30) * 100}%, var(--color-secondary) 100%)`,
+                                    }}
+                                />
+                            </div>
+
+                            {/* Contrast */}
+                            <div
+                                className="rounded-3xl p-6 border-2 transition-colors duration-300"
+                                style={{
+                                    backgroundColor: `var(--color-secondary)`,
+                                    borderColor: `var(--color-primary)`,
+                                }}
+                            >
+                                <label className="flex items-center justify-between mb-4">
+                                    <span
+                                        className="text-sm font-bold transition-colors duration-300"
+                                        style={{ color: `var(--color-primary)` }}
+                                    >
+                                        Contrast
+                                    </span>
+                                    <span
+                                        className="text-sm font-semibold transition-colors duration-300"
+                                        style={{ color: `var(--color-accent)` }}
+                                    >
+                                        {settings.contrast}%
+                                    </span>
+                                </label>
+                                <input
+                                    type="range"
+                                    min="40"
+                                    max="70"
+                                    value={settings.contrast}
+                                    onChange={(e) => updateContrast(Number(e.target.value))}
+                                    className="w-full h-3 rounded-full cursor-pointer"
+                                    style={{
+                                        background: `linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ${((settings.contrast - 40) / 30) * 100}%, var(--color-secondary) ${((settings.contrast - 40) / 30) * 100}%, var(--color-secondary) 100%)`,
+                                    }}
+                                />
+                            </div>
+
+                            {/* Text Size */}
+                            <div
+                                className="rounded-3xl p-6 border-2 transition-colors duration-300"
+                                style={{
+                                    backgroundColor: `var(--color-secondary)`,
+                                    borderColor: `var(--color-primary)`,
+                                }}
+                            >
+                                <label className="flex items-center justify-between mb-4">
+                                    <span
+                                        className="text-sm font-bold transition-colors duration-300"
+                                        style={{ color: `var(--color-primary)` }}
+                                    >
+                                        Text Size
+                                    </span>
+                                    <span
+                                        className="text-sm font-semibold transition-colors duration-300"
+                                        style={{ color: `var(--color-accent)` }}
+                                    >
+                                        {((settings.textSize / 100) * 0.8 + 0.8).toFixed(1)}x
+                                    </span>
+                                </label>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    value={settings.textSize}
+                                    onChange={(e) => updateTextSize(Number(e.target.value))}
+                                    className="w-full h-3 rounded-full cursor-pointer"
+                                    style={{
+                                        background: `linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ${settings.textSize}%, var(--color-secondary) ${settings.textSize}%, var(--color-secondary) 100%)`,
+                                    }}
+                                />
+                                <p
+                                    className="text-sm mt-4 text-center font-semibold transition-colors duration-300"
+                                    style={{
+                                        color: `var(--color-primary)`,
+                                        fontSize: `var(--text-scale)`
+                                    }}
+                                >
+                                    Preview text
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
                 {/* Preferences */}

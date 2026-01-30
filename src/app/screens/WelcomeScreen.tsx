@@ -1,11 +1,21 @@
 import React from 'react';
+import { useAuth } from '../context/AuthContext';
 
 interface WelcomeScreenProps {
   onGetStarted: () => void;
   onLogin: () => void;
+  onDemoLogin?: () => void;
 }
 
-export function WelcomeScreen({ onGetStarted, onLogin }: WelcomeScreenProps) {
+export function WelcomeScreen({ onGetStarted, onLogin, onDemoLogin }: WelcomeScreenProps) {
+  const { login } = useAuth();
+
+  const handleDemoLogin = async () => {
+    const success = await login('demo@softcalm.com', 'demo123');
+    if (success && onDemoLogin) {
+      onDemoLogin();
+    }
+  };
   return (
     <div 
       className="min-h-screen flex flex-col items-center justify-center px-6 transition-colors duration-300"
@@ -39,6 +49,18 @@ export function WelcomeScreen({ onGetStarted, onLogin }: WelcomeScreenProps) {
             }}
           >
             Get Started 🌟
+          </button>
+
+          <button
+            onClick={handleDemoLogin}
+            className="w-full rounded-3xl px-6 py-5 font-bold transition-all duration-300 border-2 hover:scale-105 active:scale-95 hover:shadow-lg"
+            style={{
+              backgroundColor: `var(--color-secondary)`,
+              borderColor: `var(--color-primary)`,
+              color: `var(--color-primary)`,
+            }}
+          >
+            Try Demo 🎨
           </button>
 
           <button

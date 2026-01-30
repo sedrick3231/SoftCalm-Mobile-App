@@ -38,7 +38,6 @@ export function BottomNavigation({ activeTab, onNavigate }: BottomNavigationProp
                 flex flex-col items-center justify-center
                 min-h-[64px] min-w-[64px] rounded-2xl
                 transition-all duration-300 ease-out
-                focus:outline-none focus:ring-2 focus:ring-offset-2
                 ${isActive
                   ? 'scale-105'
                   : 'opacity-60 hover:opacity-80'
@@ -47,7 +46,6 @@ export function BottomNavigation({ activeTab, onNavigate }: BottomNavigationProp
               style={{
                 color: isActive ? `var(--color-primary)` : `var(--color-primary)`,
                 backgroundColor: isActive ? `var(--color-secondary)` : 'transparent',
-                focusRingColor: `var(--color-primary)`,
               }}
               aria-current={isActive ? 'page' : undefined}
               aria-label={tab.label}

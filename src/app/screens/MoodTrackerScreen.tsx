@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Header } from '../components/Header';
 import { useSensory } from '../context/SensoryContext';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface MoodTrackerScreenProps {
   onBack: () => void;
 }
 
 export function MoodTrackerScreen({ onBack }: MoodTrackerScreenProps) {
+  useBackButton(onBack);
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const { settings } = useSensory();
@@ -32,12 +34,10 @@ export function MoodTrackerScreen({ onBack }: MoodTrackerScreenProps) {
       className="min-h-screen transition-colors duration-300 pb-24"
       style={{ backgroundColor: `var(--color-background)` }}
     >
-      <Header onBack={onBack} />
       
       <div className="px-5 py-8 max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="text-5xl mb-4">📊</div>
           <h2 
             className="text-3xl font-bold mb-2 transition-colors duration-300"
             style={{ color: `var(--color-primary)` }}

@@ -2,15 +2,22 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useSensory } from '../context/SensoryContext';
 import { Wind, Compass, Music, Eye, Heart } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface MainHomeScreenProps {
   onNavigateToCalmNow?: () => void;
   onNavigateToMoodTracker?: () => void;
   onNavigateToGrounding?: () => void;
   onNavigateToSounds?: () => void;
+  onBack?: () => void;
+  onTabChange?: (tab: 'home' | 'calm' | 'guides' | 'settings') => void;
 }
 
-export function MainHomeScreen({ onNavigateToCalmNow, onNavigateToMoodTracker, onNavigateToGrounding, onNavigateToSounds }: MainHomeScreenProps) {
+export function MainHomeScreen({ onNavigateToCalmNow, onNavigateToMoodTracker, onNavigateToGrounding, onNavigateToSounds, onBack, onTabChange }: MainHomeScreenProps) {
+  useBackButton(onBack);
+  React.useEffect(() => {
+    onTabChange?.('home');
+  }, [onTabChange]);
   const { user } = useAuth();
   const { settings } = useSensory();
 

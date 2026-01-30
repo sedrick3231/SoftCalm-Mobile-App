@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useSensory } from '../context/SensoryContext';
-import { ArrowLeft, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface GroundingExerciseProps {
   onBack?: () => void;
 }
 
 export function GroundingExercise({ onBack }: GroundingExerciseProps) {
+  useBackButton(onBack);
   const { settings } = useSensory();
   const [currentStep, setCurrentStep] = useState<'intro' | 'exercise' | 'complete'>('intro');
   const [completedSenses, setCompletedSenses] = useState(new Set<number>());
@@ -41,14 +43,6 @@ export function GroundingExercise({ onBack }: GroundingExerciseProps) {
         style={{ backgroundColor: `var(--color-background)` }}
       >
         <div className="px-5 py-6 flex-1 flex flex-col items-center justify-center max-w-2xl mx-auto w-full">
-          <button
-            onClick={onBack}
-            className="self-start mb-8 min-h-[48px] px-4 py-2 transition-all duration-300 hover:scale-105 active:scale-95"
-            style={{ color: `var(--color-primary)` }}
-          >
-            <ArrowLeft size={24} />
-          </button>
-
           <div className="text-center flex-1 flex flex-col items-center justify-center w-full">
             <h2 
               className="text-4xl font-bold mb-2 transition-colors duration-300"
@@ -198,14 +192,6 @@ export function GroundingExercise({ onBack }: GroundingExerciseProps) {
       style={{ backgroundColor: `var(--color-background)` }}
     >
       <div className="px-5 py-6 max-w-2xl mx-auto">
-        <button
-          onClick={onBack}
-          className="mb-8 min-h-[48px] px-4 py-2 transition-all duration-300 hover:scale-105 active:scale-95"
-          style={{ color: `var(--color-primary)` }}
-        >
-          <ArrowLeft size={24} />
-        </button>
-
         <h2 
           className="text-3xl font-bold mb-1 transition-colors duration-300"
           style={{ color: `var(--color-primary)` }}

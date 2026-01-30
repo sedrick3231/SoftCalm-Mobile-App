@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Header } from '../components/Header';
 import { useSensory } from '../context/SensoryContext';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface AccessibilitySettingsScreenProps {
   onBack: () => void;
 }
 
 export function AccessibilitySettingsScreen({ onBack }: AccessibilitySettingsScreenProps) {
+  useBackButton(onBack);
   const [textSize, setTextSize] = useState(100);
   const [reducedMotion, setReducedMotion] = useState(true);
   const [highContrast, setHighContrast] = useState(false);

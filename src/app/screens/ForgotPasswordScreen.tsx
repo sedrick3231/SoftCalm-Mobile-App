@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface ForgotPasswordScreenProps {
   onBack: () => void;
 }
 
 export function ForgotPasswordScreen({ onBack }: ForgotPasswordScreenProps) {
+  useBackButton(onBack);
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
@@ -32,14 +33,6 @@ export function ForgotPasswordScreen({ onBack }: ForgotPasswordScreenProps) {
       className="min-h-screen flex flex-col items-center justify-center px-6 transition-colors duration-300"
       style={{ backgroundColor: `var(--color-background)` }}
     >
-      <button
-        onClick={onBack}
-        className="absolute top-6 left-5 min-h-[48px] px-4 py-2 transition-all duration-300 hover:scale-105 active:scale-95"
-        style={{ color: `var(--color-primary)` }}
-      >
-        <ArrowLeft size={24} />
-      </button>
-
       <div className="w-full max-w-sm">
         <div className="text-center mb-10">
           <div className="text-6xl mb-4">🔄</div>

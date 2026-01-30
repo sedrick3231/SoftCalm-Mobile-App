@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSensory } from '../context/SensoryContext';
-import { ArrowLeft } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface VisualCalmProps {
   onBack?: () => void;
 }
 
 export function VisualCalm({ onBack }: VisualCalmProps) {
+  useBackButton(onBack);
+
   const { settings } = useSensory();
   const [isAnimating, setIsAnimating] = useState(false);
   const [duration, setDuration] = useState(300);
@@ -52,27 +54,19 @@ export function VisualCalm({ onBack }: VisualCalmProps) {
   ];
 
   return (
-    <div 
+    <div
       className="min-h-screen transition-colors duration-300 pb-24"
       style={{ backgroundColor: `var(--color-background)` }}
     >
       <div className="px-5 py-6 max-w-2xl mx-auto">
-        <button
-          onClick={onBack}
-          className="mb-8 min-h-[48px] px-4 py-2 transition-all duration-300 hover:scale-105 active:scale-95"
-          style={{ color: `var(--color-primary)` }}
-        >
-          <ArrowLeft size={24} />
-        </button>
-
         <div className="text-center mb-10">
-          <h2 
+          <h2
             className="text-3xl font-bold mb-2 transition-colors duration-300"
             style={{ color: `var(--color-primary)` }}
           >
             Visual Calm
           </h2>
-          <p 
+          <p
             className="text-sm transition-colors duration-300 opacity-70"
             style={{ color: `var(--color-primary)` }}
           >
@@ -101,7 +95,7 @@ export function VisualCalm({ onBack }: VisualCalmProps) {
             <div className="text-9xl relative z-10 animate-bounce">{scenes[0].emoji}</div>
           </div>
         ) : (
-          <div 
+          <div
             className="mb-8 h-72 rounded-3xl border-4 flex items-center justify-center transition-colors duration-300"
             style={{
               backgroundColor: `var(--color-secondary)`,
@@ -110,7 +104,7 @@ export function VisualCalm({ onBack }: VisualCalmProps) {
           >
             <div className="text-center">
               <div className="text-8xl mb-4">✨</div>
-              <p 
+              <p
                 className="transition-colors duration-300"
                 style={{ color: `var(--color-primary)` }}
               >
@@ -121,20 +115,20 @@ export function VisualCalm({ onBack }: VisualCalmProps) {
         )}
 
         {/* Timer Display */}
-        <div 
+        <div
           className="rounded-3xl p-8 text-center mb-8 border-2 transition-colors duration-300"
           style={{
             backgroundColor: `var(--color-secondary)`,
             borderColor: `var(--color-primary)`,
           }}
         >
-          <p 
+          <p
             className="text-sm mb-3 transition-colors duration-300 opacity-70"
             style={{ color: `var(--color-primary)` }}
           >
             ⏱️ Time Remaining
           </p>
-          <p 
+          <p
             className="text-6xl font-bold font-mono transition-colors duration-300"
             style={{ color: `var(--color-accent)` }}
           >
@@ -144,7 +138,7 @@ export function VisualCalm({ onBack }: VisualCalmProps) {
 
         {/* Duration Selector */}
         <div className="mb-8">
-          <label 
+          <label
             className="block text-sm font-bold mb-3 transition-colors duration-300"
             style={{ color: `var(--color-primary)` }}
           >
@@ -176,7 +170,7 @@ export function VisualCalm({ onBack }: VisualCalmProps) {
 
         {/* Scene Selector */}
         <div className="mb-8">
-          <p 
+          <p
             className="text-sm font-bold mb-4 transition-colors duration-300"
             style={{ color: `var(--color-primary)` }}
           >
@@ -194,7 +188,7 @@ export function VisualCalm({ onBack }: VisualCalmProps) {
               >
                 <div className="flex items-center gap-4">
                   <span className="text-4xl">{scene.emoji}</span>
-                  <p 
+                  <p
                     className="font-bold flex-1 text-left transition-colors duration-300"
                     style={{ color: `var(--color-primary)` }}
                   >
@@ -219,20 +213,20 @@ export function VisualCalm({ onBack }: VisualCalmProps) {
         </button>
 
         {/* Guidance */}
-        <div 
+        <div
           className="rounded-3xl p-6 text-center border-2 transition-colors duration-300"
           style={{
             backgroundColor: `var(--color-secondary)`,
             borderColor: `var(--color-primary)`,
           }}
         >
-          <p 
+          <p
             className="text-sm transition-colors duration-300"
             style={{ color: `var(--color-primary)` }}
           >
             🌸 Watch without pressure
           </p>
-          <p 
+          <p
             className="text-sm transition-colors duration-300 opacity-70 mt-2"
             style={{ color: `var(--color-primary)` }}
           >

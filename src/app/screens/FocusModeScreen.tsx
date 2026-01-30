@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface FocusModeScreenProps {
   onBack: () => void;
 }
 
 export function FocusModeScreen({ onBack }: FocusModeScreenProps) {
+  useBackButton(onBack);
   const [isActive, setIsActive] = useState(false);
   const [duration, setDuration] = useState(25);
 
@@ -21,14 +22,6 @@ export function FocusModeScreen({ onBack }: FocusModeScreenProps) {
       style={{ backgroundColor: `var(--color-background)` }}
     >
       <div className="px-6 py-8">
-        <button
-          onClick={onBack}
-          className="mb-8 min-h-[48px] px-4 py-2 transition-all duration-300 hover:scale-105 active:scale-95"
-          style={{ color: `var(--color-primary)` }}
-        >
-          <ArrowLeft size={24} />
-        </button>
-        
         <div className="text-center mb-10">
           <div className="text-6xl mb-4">🎯</div>
           <h2 

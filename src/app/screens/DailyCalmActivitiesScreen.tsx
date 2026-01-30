@@ -1,12 +1,14 @@
 import React from 'react';
 import { Header } from '../components/Header';
 import { useSensory } from '../context/SensoryContext';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface DailyCalmActivitiesScreenProps {
   onBack: () => void;
 }
 
 export function DailyCalmActivitiesScreen({ onBack }: DailyCalmActivitiesScreenProps) {
+  useBackButton(onBack);
   const { settings } = useSensory();
 
   const activities = [

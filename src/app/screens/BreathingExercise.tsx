@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSensory } from '../context/SensoryContext';
-import { ArrowLeft } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface BreathingExerciseProps {
   onComplete?: () => void;
@@ -8,6 +8,7 @@ interface BreathingExerciseProps {
 }
 
 export function BreathingExercise({ onComplete, onBack }: BreathingExerciseProps) {
+  useBackButton(onBack);
   const { settings } = useSensory();
   const [isBreathing, setIsBreathing] = useState(false);
   const [breathPhase, setBreathPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
@@ -80,15 +81,6 @@ export function BreathingExercise({ onComplete, onBack }: BreathingExerciseProps
       style={{ backgroundColor: `var(--color-background)` }}
     >
       <div className="px-5 py-6 flex-1 flex flex-col items-center justify-center max-w-2xl mx-auto w-full">
-        {/* Header */}
-        <button
-          onClick={onBack}
-          className="self-start mb-8 min-h-[48px] px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95"
-          style={{ color: `var(--color-primary)` }}
-        >
-          <ArrowLeft size={24} />
-        </button>
-
         <div className="text-center flex-1 flex flex-col items-center justify-center w-full">
           {/* Title */}
           <h2 

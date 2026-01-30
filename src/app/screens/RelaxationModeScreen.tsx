@@ -1,11 +1,12 @@
 import React from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface RelaxationModeScreenProps {
   onBack: () => void;
 }
 
 export function RelaxationModeScreen({ onBack }: RelaxationModeScreenProps) {
+  useBackButton(onBack);
   const techniques = [
     { id: 1, title: 'Deep Breathing', description: 'Breathe slowly and deeply', emoji: '🫁' },
     { id: 2, title: 'Progressive Relaxation', description: 'Release muscle tension', emoji: '💆' },
@@ -19,14 +20,6 @@ export function RelaxationModeScreen({ onBack }: RelaxationModeScreenProps) {
       style={{ backgroundColor: `var(--color-background)` }}
     >
       <div className="px-6 py-8">
-        <button
-          onClick={onBack}
-          className="mb-8 min-h-[48px] px-4 py-2 transition-all duration-300 hover:scale-105 active:scale-95"
-          style={{ color: `var(--color-primary)` }}
-        >
-          <ArrowLeft size={24} />
-        </button>
-        
         <div className="text-center mb-10">
           <div className="text-6xl mb-4">🌿</div>
           <h2 

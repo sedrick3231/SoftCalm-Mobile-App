@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header } from '../components/Header';
 import { useSensory } from '../context/SensoryContext';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface SensoryPreferenceSetupScreenProps {
   onBack: () => void;
@@ -8,6 +9,7 @@ interface SensoryPreferenceSetupScreenProps {
 }
 
 export function SensoryPreferenceSetupScreen({ onBack, onComplete }: SensoryPreferenceSetupScreenProps) {
+  useBackButton(onBack);
   const { settings, updateComfortLevel } = useSensory();
 
   return (

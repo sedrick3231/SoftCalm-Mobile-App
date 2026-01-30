@@ -2,12 +2,14 @@ import React from 'react';
 import { Header } from '../components/Header';
 import { useSensory } from '../context/SensoryContext';
 import { Volume2, VolumeX } from 'lucide-react';
+import { useBackButton } from '../hooks/useBackButton';
 
 interface SoundControlScreenProps {
   onBack: () => void;
 }
 
 export function SoundControlScreen({ onBack }: SoundControlScreenProps) {
+  useBackButton(onBack);
   const { settings, toggleSound } = useSensory();
 
   return (
