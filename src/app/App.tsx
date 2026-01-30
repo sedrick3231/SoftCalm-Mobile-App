@@ -94,15 +94,19 @@ function AppContent() {
   const { isAuthenticated } = useAuth();
 
   const navigate = (screen: Screen) => {
-    setCurrentScreen(screen);
-    setHistory((prevHistory) => [...prevHistory, screen]);
+  setCurrentScreen(screen);
+  setHistory((prevHistory) => [...prevHistory, screen]);
 
-    // Update current tab for main screens
-    if (screen === 'main-home') setCurrentTab('home');
-    if (screen === 'main-calm') setCurrentTab('calm');
-    if (screen === 'main-guides') setCurrentTab('guides');
-    if (screen === 'main-settings') setCurrentTab('settings');
-  };
+  // Push state so browser back works
+  window.history.pushState({ screen }, '', window.location.href);
+
+  // Update current tab for main screens
+  if (screen === 'main-home') setCurrentTab('home');
+  if (screen === 'main-calm') setCurrentTab('calm');
+  if (screen === 'main-guides') setCurrentTab('guides');
+  if (screen === 'main-settings') setCurrentTab('settings');
+};
+
 
   const goBack = () => {
     setHistory((prevHistory) => {
